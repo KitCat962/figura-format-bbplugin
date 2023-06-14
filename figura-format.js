@@ -8,7 +8,7 @@
         icon: 'change_history',
         description: 'A custom Model Format for use with the Figura mod, stripping Blockbench features that are incompatible.',
         version: '0.0.2',
-        min_version:'4.7.0',
+        min_version: '4.7.0',
         tags: ['Minecraft: Java Edition', 'Figura'],
         variant: 'both',
         await_loading: true,
@@ -52,12 +52,12 @@
                 }
             })
 
-            Group.prototype.name_regex = () => Format.id=="figura" ? false : Format.bone_rig ? 'a-zA-Z0-9_' : false;
-            Group.prototype.needsUniqueName = () => Format.id=="figura" ? false : Format.bone_rig;
+            Group.prototype.name_regex = () => Format.id == "figura" ? false : Format.bone_rig ? 'a-zA-Z0-9_' : false;
+            Group.prototype.needsUniqueName = () => Format.id == "figura" ? false : Format.bone_rig;
 
-            let molangSyntax=Validator.checks.find(element => element.id=='molang_syntax')
-            if(molangSyntax) 
-                molangSyntax.condition = () => Format.id=="figura" ? false : Format.animation_mode
+            let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
+            if (molangSyntax)
+                molangSyntax.condition = () => Format.id == "figura" ? false : Format.animation_mode
         },
         onunload() {
             modelFormat.delete()
