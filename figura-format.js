@@ -51,6 +51,9 @@
                 onDeactivation() {
                 }
             })
+
+            Group.prototype.name_regex = () => Format.id=="figura" ? false : Format.bone_rig ? 'a-zA-Z0-9_' : false;
+            Group.prototype.needsUniqueName = () => Format.id=="figura" ? false : Format.bone_rig;
         },
         onunload() {
             modelFormat.delete()
