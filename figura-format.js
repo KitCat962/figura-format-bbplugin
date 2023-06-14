@@ -54,6 +54,10 @@
 
             Group.prototype.name_regex = () => Format.id=="figura" ? false : Format.bone_rig ? 'a-zA-Z0-9_' : false;
             Group.prototype.needsUniqueName = () => Format.id=="figura" ? false : Format.bone_rig;
+
+            let molangSyntax=Validator.checks.find(element => element.id=='molang_syntax')
+            if(molangSyntax) 
+                molangSyntax.condition = () => Format.id=="figura" ? false : Format.animation_mode
         },
         onunload() {
             modelFormat.delete()
