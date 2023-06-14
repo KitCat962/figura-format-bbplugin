@@ -20,7 +20,7 @@
                 category: 'low_poly',
                 show_on_start_screen: true,
                 box_uv: false,
-                optional_box_uv: false,
+                optional_box_uv: true,
                 single_texture: false,
                 model_identifier: false,
                 parent_model_id: false,
