@@ -17,7 +17,7 @@
                 icon: 'change_history',
                 name: 'Figura',
                 description: 'Generic Format clone that removes features that Figura does not support.',
-
+                category: 'low_poly',
                 show_on_start_screen: true,
                 box_uv: false,
                 optional_box_uv: false,
