@@ -13,6 +13,14 @@
         variant: 'both',
         await_loading: true,
         onload() {
+
+            Group.prototype.name_regex = () => Format.id == "figura" ? false : Format.bone_rig ? 'a-zA-Z0-9_' : false;
+            Group.prototype.needsUniqueName = () => Format.id == "figura" ? false : Format.bone_rig;
+
+            let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
+            if (molangSyntax)
+                molangSyntax.condition = () => Format.id == "figura" ? false : Format.animation_mode
+
             let particle = EffectAnimator.prototype.channels.particle.name, sound = EffectAnimator.prototype.channels.sound.name
 
             modelFormat = new ModelFormat('figura', {
@@ -57,13 +65,6 @@
                     EffectAnimator.prototype.channels.sound.name = sound
                 }
             })
-
-            Group.prototype.name_regex = () => Format.id == "figura" ? false : Format.bone_rig ? 'a-zA-Z0-9_' : false;
-            Group.prototype.needsUniqueName = () => Format.id == "figura" ? false : Format.bone_rig;
-
-            let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
-            if (molangSyntax)
-                molangSyntax.condition = () => Format.id == "figura" ? false : Format.animation_mode
 
         },
         onunload() {
