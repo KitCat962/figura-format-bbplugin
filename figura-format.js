@@ -21,7 +21,8 @@
             if (molangSyntax)
                 molangSyntax.condition = () => Format.id == "figura" ? false : Format.animation_mode
 
-            let particle = EffectAnimator.prototype.channels.particle.name, sound = EffectAnimator.prototype.channels.sound.name
+            let particle = EffectAnimator.prototype.channels.particle.name,
+                sound = EffectAnimator.prototype.channels.sound.name
 
             modelFormat = new ModelFormat('figura', {
                 icon: 'change_history',
