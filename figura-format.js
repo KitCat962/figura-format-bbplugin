@@ -55,7 +55,7 @@
         author: 'KitCat962',
         icon: 'change_history',
         description: 'A custom Model Format for use with the Figura mod, stripping Blockbench features that are incompatible.',
-        version: '0.0.4',
+        version: '0.0.5',
         min_version: '4.7.0',
         tags: ['Minecraft: Java Edition', 'Figura'],
         variant: 'both',
