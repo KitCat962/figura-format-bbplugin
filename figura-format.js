@@ -13,6 +13,8 @@
         variant: 'both',
         await_loading: true,
         onload() {
+            let particle = EffectAnimator.prototype.channels.particle.name, sound = EffectAnimator.prototype.channels.sound.name
+
             modelFormat = new ModelFormat('figura', {
                 icon: 'change_history',
                 name: 'Figura',
@@ -47,8 +49,12 @@
                 animation_mode: true,
                 pose_mode: false,
                 onActivation() {
+                    EffectAnimator.prototype.channels.particle.name = "N/A"
+                    EffectAnimator.prototype.channels.sound.name = "N/A"
                 },
                 onDeactivation() {
+                    EffectAnimator.prototype.channels.particle.name = particle
+                    EffectAnimator.prototype.channels.sound.name = sound
                 }
             })
 
@@ -58,6 +64,7 @@
             let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
             if (molangSyntax)
                 molangSyntax.condition = () => Format.id == "figura" ? false : Format.animation_mode
+
         },
         onunload() {
             modelFormat.delete()
