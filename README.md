@@ -6,3 +6,8 @@ This Plugin adds a Project Format that will remove the following features from B
 * Model Identifier (What even is this anyways? Regardless, Figura doesnt use it)
 * Locators (Figura does not load them, and IK is not supported)
 * Group Name Limitations (Duplicate names and arbitrary characters are now allowed)
+* Molang Errors (Figura uses lua, not molang)
+* Particle and Sound keyframes (They cannot be deleted, but they *have* been renamed to `"N/A"`)
+
+Additionally, the Figura Project Format adds these features:
+* A Toggle to automatically set the Project UV to match the current texture size (Not available with BoxUV)
