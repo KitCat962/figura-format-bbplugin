@@ -1,12 +1,12 @@
 (function () {
 
     let modelFormat
-    let callback
     let shouldMatchTextureSize = false
     let toggleMatchTextureSize = new Toggle('match-texture-size', {
         name: "Match Project UV with Texture Size",
         default: false,
         description: "Changes the ProjectUV so that it will always match the size of the active Texture.",
+        condition: () => Format.id == 'figura' && !Project.box_uv,
         onChange(state) {
             shouldMatchTextureSize = state
             if (state)
@@ -15,11 +15,38 @@
     })
     let _width = 0, _height = 0
     function updateProjectUV() {
+        if (Project.box_uv) return
+
+        Cube.all.forEach(cube => {
+            cube.setUVMode(false);
+        })
+
         let texture = UVEditor.texture != 0 ? UVEditor.texture : Texture.selected
-        if (texture != null && (texture.width != _width || texture.height != _height)) {
-            setProjectResolution(1, 1, true)
-            setProjectResolution(texture.width, texture.height, true)
-            _width = texture.width, _height = texture.height
+        let texture_width = texture.width,
+            texture_height = texture.height
+        if (texture != null && (texture_width != _width || texture_height != _height)) {
+            Cube.all.forEach(cube => {
+                for (var key in cube.faces) {
+                    var uv = cube.faces[key].uv;
+                    uv[0] *= texture_width / Project.texture_width;
+                    uv[2] *= texture_width / Project.texture_width;
+                    uv[1] *= texture_height / Project.texture_height;
+                    uv[3] *= texture_height / Project.texture_height;
+                }
+            })
+            Mesh.all.forEach(mesh => {
+                for (var key in mesh.faces) {
+                    var uv = mesh.faces[key].uv;
+                    for (let vkey in uv) {
+                        uv[vkey][0] *= texture_width / Project.texture_width;
+                        uv[vkey][1] *= texture_height / Project.texture_height;
+                    }
+                }
+            })
+
+            Project.texture_width = _width = texture_width;
+            Project.texture_height = _height = texture_height;
+            Canvas.updateAllUVs()
         }
     }
 
@@ -34,11 +61,9 @@
         variant: 'both',
         await_loading: true,
         onload() {
-            MenuBar.menus.uv.addAction(toggleMatchTextureSize)
-            callback = Blockbench.on('update_selection', function (data) {
-                if (shouldMatchTextureSize)
-                    updateProjectUV()
-            })
+            MenuBar.menus.tools.addAction(toggleMatchTextureSize)
+
+            let callback
             modelFormat = new ModelFormat('figura', {
                 icon: 'change_history',
                 name: 'Figura',
@@ -46,7 +71,7 @@
                 category: 'low_poly',
                 show_on_start_screen: true,
                 box_uv: false,
-                optional_box_uv: false,
+                optional_box_uv: true,
                 single_texture: false,
                 model_identifier: false,
                 parent_model_id: false,
@@ -73,14 +98,18 @@
                 animation_mode: true,
                 pose_mode: false,
                 onActivation() {
+                    callback = Blockbench.on('update_selection', function (data) {
+                        if (shouldMatchTextureSize)
+                            updateProjectUV()
+                    })
                 },
                 onDeactivation() {
+                    callback.delete()
                 }
             })
         },
         onunload() {
-            MenuBar.menus.uv.removeAction('match-texture')
-            callback.delete()
+            MenuBar.menus.tools.removeAction('match-texture-size')
             modelFormat.delete()
         }
     });
