@@ -55,20 +55,28 @@
         author: 'KitCat962',
         icon: 'change_history',
         description: 'A custom Model Format for use with the Figura mod, stripping Blockbench features that are incompatible.',
-        version: '0.0.1',
+        version: '0.0.3',
         min_version: '4.7.0',
         tags: ['Minecraft: Java Edition', 'Figura'],
         variant: 'both',
         await_loading: true,
         onload() {
-            MenuBar.menus.tools.addAction(toggleMatchTextureSize)
+            Group.prototype.name_regex = () => Format.id == "figura" ? false : Format.bone_rig ? 'a-zA-Z0-9_' : false;
+            Group.prototype.needsUniqueName = () => Format.id == "figura" ? false : Format.bone_rig;
+
+            let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
+            if (molangSyntax)
+                molangSyntax.condition = () => Format.id == "figura" ? false : Format.animation_mode
 
             let callback
+            let particle = EffectAnimator.prototype.channels.particle.name,
+                sound = EffectAnimator.prototype.channels.sound.name
             modelFormat = new ModelFormat('figura', {
                 icon: 'change_history',
                 name: 'Figura',
                 description: 'Generic Format clone that removes features that Figura does not support.',
                 category: 'low_poly',
+                target: ['Figura'],
                 show_on_start_screen: true,
                 box_uv: false,
                 optional_box_uv: true,
@@ -102,11 +110,16 @@
                         if (shouldMatchTextureSize)
                             updateProjectUV()
                     })
+                    EffectAnimator.prototype.channels.particle.name = "N/A"
+                    EffectAnimator.prototype.channels.sound.name = "N/A"
                 },
                 onDeactivation() {
                     callback.delete()
+                    EffectAnimator.prototype.channels.particle.name = particle
+                    EffectAnimator.prototype.channels.sound.name = sound
                 }
             })
+
         },
         onunload() {
             MenuBar.menus.tools.removeAction('match-texture-size')
