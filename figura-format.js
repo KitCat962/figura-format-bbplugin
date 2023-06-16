@@ -4,14 +4,12 @@
     let addAnimationAction = BarItems['add_animation']
     let addAnimationClick = addAnimationAction.click
     let showMessageBox = Blockbench.showMessageBox
-    let shouldMatchTextureSize = false
     let toggleMatchTextureSize = new Toggle('match-texture-size', {
         name: "Match Project UV with Texture Size",
         default: false,
         description: "Changes the ProjectUV so that it will always match the size of the active Texture.",
         condition: () => Format.id == 'figura' && !Project.box_uv,
         onChange(state) {
-            shouldMatchTextureSize = state
             if (state)
                 updateProjectUV()
         }
@@ -124,7 +122,7 @@
                 pose_mode: false,
                 onActivation() {
                     callback = Blockbench.on('update_selection', function (data) {
-                        if (shouldMatchTextureSize)
+                        if (toggleMatchTextureSize.value)
                             updateProjectUV()
                     })
                     Language.addTranslations('en', {
