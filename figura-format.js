@@ -78,7 +78,9 @@
 
             let callback
             let particle = EffectAnimator.prototype.channels.particle.name,
-                sound = EffectAnimator.prototype.channels.sound.name
+                sound = EffectAnimator.prototype.channels.sound.name,
+                instructions = EffectAnimator.prototype.channels.timeline.name
+
             modelFormat = new ModelFormat('figura', {
                 icon: 'change_history',
                 name: 'Figura',
@@ -120,11 +122,13 @@
                     })
                     EffectAnimator.prototype.channels.particle.name = "N/A"
                     EffectAnimator.prototype.channels.sound.name = "N/A"
+                    EffectAnimator.prototype.channels.timeline.name = "Lua Script"
                 },
                 onDeactivation() {
                     callback.delete()
                     EffectAnimator.prototype.channels.particle.name = particle
                     EffectAnimator.prototype.channels.sound.name = sound
+                    EffectAnimator.prototype.channels.timeline.name = instructions
                 }
             })
 
