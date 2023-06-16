@@ -88,7 +88,6 @@
 
             Dialog.prototype.build = function () {
                 if (Format.id == 'figura' && this.id == 'texture_edit') delete this.form.render_mode
-                console.log(this)
                 DialogBuild.call(this)
             }
 
