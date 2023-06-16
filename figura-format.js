@@ -87,10 +87,6 @@
             }
 
             let callback
-            let particle = EffectAnimator.prototype.channels.particle.name,
-                sound = EffectAnimator.prototype.channels.sound.name,
-                instructions = EffectAnimator.prototype.channels.timeline.name
-
             modelFormat = new ModelFormat('figura', {
                 icon: 'change_history',
                 name: 'Figura',
@@ -130,20 +126,20 @@
                         if (shouldMatchTextureSize)
                             updateProjectUV()
                     })
-                    EffectAnimator.prototype.channels.particle.name = "N/A"
-                    EffectAnimator.prototype.channels.sound.name = "N/A"
-                    EffectAnimator.prototype.channels.timeline.name = "Lua Script"
-                    Language.addTranslations('en',{
-                        ['menu.animation.anim_time_update']:"Start Offset"
+                    Language.addTranslations('en', {
+                        ['menu.animation.anim_time_update']: "Start Offset",
+                        ['timeline.particle']: "N/A",
+                        ['timeline.sound']: "N/A",
+                        ['timeline.timeline']: "Lua Script",
                     })
                 },
                 onDeactivation() {
                     callback.delete()
-                    EffectAnimator.prototype.channels.particle.name = particle
-                    EffectAnimator.prototype.channels.sound.name = sound
-                    EffectAnimator.prototype.channels.timeline.name = instructions
-                    Language.addTranslations('en',{
-                        ['menu.animation.anim_time_update']:"Anim Time Update"
+                    Language.addTranslations('en', {
+                        ['menu.animation.anim_time_update']: "Anim Time Update",
+                        ['timeline.particle']: "Particle",
+                        ['timeline.sound']: "Sound",
+                        ['timeline.timeline']: "Instructions",
                     })
                 }
             })
