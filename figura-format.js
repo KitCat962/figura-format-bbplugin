@@ -1,6 +1,7 @@
 (function () {
 
     let modelFormat
+    let showMessageBox = Blockbench.showMessageBox
     let shouldMatchTextureSize = false
     let toggleMatchTextureSize = new Toggle('match-texture-size', {
         name: "Match Project UV with Texture Size",
@@ -70,6 +71,11 @@
             if (molangSyntax)
                 molangSyntax.condition = () => Format.id == "figura" ? false : Format.animation_mode
 
+            Blockbench.showMessageBox = (options, callback) => {
+                if (Format.id == 'figura' && options.translateKey == "duplicate_groups") return
+                showMessageBox(options, callback)
+            }
+
             let callback
             let particle = EffectAnimator.prototype.channels.particle.name,
                 sound = EffectAnimator.prototype.channels.sound.name
@@ -125,6 +131,7 @@
         },
         onunload() {
             MenuBar.menus.tools.removeAction('match-texture-size')
+            Blockbench.showMessageBox = showMessageBox
             modelFormat.delete()
         }
     });
