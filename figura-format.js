@@ -72,13 +72,13 @@
             if (molangSyntax)
                 molangSyntax.condition = () => Format.id == "figura" ? false : Format.animation_mode
 
-            Blockbench.showMessageBox = (options, callback) => {
+            Blockbench.showMessageBox = function(options, callback) {
                 if (Format.id == 'figura' && options.translateKey == "duplicate_groups") return
-                showMessageBox(options, callback)
+                showMessageBox.apply(this, options, callback)
             }
 
             addAnimationAction.click = function () {
-                if (Format.id != 'figura') addAnimationClick()
+                if (Format.id != 'figura') addAnimationClick.call(this)
                 else
                     new Animation({
                         name: 'new',
