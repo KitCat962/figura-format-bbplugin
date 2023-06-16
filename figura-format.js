@@ -80,10 +80,11 @@
 
             addAnimationAction.click = function () {
                 if (Format.id != 'figura') addAnimationClick()
-                new Animation({
-                    name: 'new',
-                    saved: false
-                }).add(true).propertiesDialog()
+                else
+                    new Animation({
+                        name: 'new',
+                        saved: false
+                    }).add(true).propertiesDialog()
             }
 
             let callback
