@@ -1,6 +1,8 @@
 (function () {
 
     let modelFormat
+    let addAnimationAction = BarItems['add_animation']
+    let addAnimationClick = addAnimationAction.click
     let showMessageBox = Blockbench.showMessageBox
     let shouldMatchTextureSize = false
     let toggleMatchTextureSize = new Toggle('match-texture-size', {
@@ -76,6 +78,14 @@
                 showMessageBox(options, callback)
             }
 
+            addAnimationAction.click = function () {
+                if (Format.id != 'figura') addAnimationClick()
+                new Animation({
+                    name: 'new',
+                    saved: false
+                }).add(true).propertiesDialog()
+            }
+
             let callback
             let particle = EffectAnimator.prototype.channels.particle.name,
                 sound = EffectAnimator.prototype.channels.sound.name,
@@ -136,6 +146,7 @@
         onunload() {
             MenuBar.menus.tools.removeAction('match-texture-size')
             Blockbench.showMessageBox = showMessageBox
+            addAnimationAction.click = addAnimationClick
             modelFormat.delete()
         }
     });
