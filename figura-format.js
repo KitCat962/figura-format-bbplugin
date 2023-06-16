@@ -129,6 +129,7 @@
                     })
                     Language.addTranslations('en', {
                         ['menu.animation.anim_time_update']: "Start Offset",
+                        ['menu.animation.override']: "Override Vanilla Animations",
                         ['timeline.particle']: "N/A",
                         ['timeline.sound']: "N/A",
                         ['timeline.timeline']: "Lua Script",
@@ -138,6 +139,7 @@
                     callback.delete()
                     Language.addTranslations('en', {
                         ['menu.animation.anim_time_update']: "Anim Time Update",
+                        ['menu.animation.override']: "Override",
                         ['timeline.particle']: "Particle",
                         ['timeline.sound']: "Sound",
                         ['timeline.timeline']: "Instructions",
