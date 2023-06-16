@@ -3,6 +3,7 @@
     let modelFormat
     let addAnimationAction = BarItems['add_animation']
     let addAnimationClick = addAnimationAction.click
+    let DialogBuild = Dialog.prototype.build
     let showMessageBox = Blockbench.showMessageBox
     let toggleMatchTextureSize = new Toggle('match-texture-size', {
         name: "Match Project UV with Texture Size",
@@ -85,6 +86,12 @@
                     }).add(true).propertiesDialog()
             }
 
+            Dialog.prototype.build = function () {
+                if (Format.id == 'figura' && this.id == 'texture_edit') delete this.form.render_mode
+                console.log(this)
+                DialogBuild.call(this)
+            }
+
             let callback
             modelFormat = new ModelFormat('figura', {
                 icon: 'change_history',
@@ -150,6 +157,7 @@
             MenuBar.menus.tools.removeAction('match-texture-size')
             Blockbench.showMessageBox = showMessageBox
             addAnimationAction.click = addAnimationClick
+            Dialog.prototype.build = DialogBuild
             modelFormat.delete()
         }
     });
