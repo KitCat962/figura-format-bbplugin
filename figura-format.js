@@ -133,12 +133,18 @@
                     EffectAnimator.prototype.channels.particle.name = "N/A"
                     EffectAnimator.prototype.channels.sound.name = "N/A"
                     EffectAnimator.prototype.channels.timeline.name = "Lua Script"
+                    Language.addTranslations('en',{
+                        ['menu.animation.anim_time_update']:"Start Offset"
+                    })
                 },
                 onDeactivation() {
                     callback.delete()
                     EffectAnimator.prototype.channels.particle.name = particle
                     EffectAnimator.prototype.channels.sound.name = sound
                     EffectAnimator.prototype.channels.timeline.name = instructions
+                    Language.addTranslations('en',{
+                        ['menu.animation.anim_time_update']:"Anim Time Update"
+                    })
                 }
             })
 
