@@ -76,6 +76,7 @@
                 showMessageBox.apply(this, options, callback)
             }
 
+            BarItems['export_animation_file'].condition = () => Format.id != 'figura'
             BarItems['add_animation'].click = function () {
                 if (Format.id != 'figura') addAnimationClick.call(this)
                 else
