@@ -140,7 +140,7 @@
                         ['timeline.timeline']: "Lua Script",
                     })
                     for (const [type, data] of Object.entries(EffectAnimator.prototype.channels))
-                        data.name = tl(f`timeline.${type}`)
+                        data.name = tl(`timeline.${type}`)
                 },
                 onDeactivation() {
                     callback.delete()
@@ -152,7 +152,7 @@
                         ['timeline.timeline']: "Instructions",
                     })
                     for (const [type, data] of Object.entries(EffectAnimator.prototype.channels))
-                        data.name = tl(f`timeline.${type}`)
+                        data.name = tl(`timeline.${type}`)
                 }
             })
 
