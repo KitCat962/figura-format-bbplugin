@@ -86,6 +86,7 @@
                     }).add(true).propertiesDialog()
             }
 
+            Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format.id != 'figura'
             Dialog.prototype.build = function () {
                 if (Format.id == 'figura' && this.id == 'texture_edit') delete this.form.render_mode
                 DialogBuild.call(this)
