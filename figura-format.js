@@ -139,6 +139,8 @@
                         ['timeline.sound']: "N/A",
                         ['timeline.timeline']: "Lua Script",
                     })
+                    for (const [type, data] of Object.entries(EffectAnimator.prototype.channels))
+                        data.name = tl(f`timeline.${type}`)
                 },
                 onDeactivation() {
                     callback.delete()
@@ -149,6 +151,8 @@
                         ['timeline.sound']: "Sound",
                         ['timeline.timeline']: "Instructions",
                     })
+                    for (const [type, data] of Object.entries(EffectAnimator.prototype.channels))
+                        data.name = tl(f`timeline.${type}`)
                 }
             })
 
