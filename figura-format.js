@@ -1,8 +1,7 @@
 (function () {
 
     let modelFormat
-    let addAnimationAction = BarItems['add_animation']
-    let addAnimationClick = addAnimationAction.click
+    let addAnimationClick = BarItems['add_animation'].click
     let DialogBuild = Dialog.prototype.build
     let showMessageBox = Blockbench.showMessageBox
     let toggleMatchTextureSize = new Toggle('match-texture-size', {
@@ -77,7 +76,7 @@
                 showMessageBox.apply(this, options, callback)
             }
 
-            addAnimationAction.click = function () {
+            BarItems['add_animation'].click = function () {
                 if (Format.id != 'figura') addAnimationClick.call(this)
                 else
                     new Animation({
@@ -160,7 +159,7 @@
         onunload() {
             MenuBar.menus.tools.removeAction('match-texture-size')
             Blockbench.showMessageBox = showMessageBox
-            addAnimationAction.click = addAnimationClick
+            BarItems['add_animation'].click = addAnimationClick
             Dialog.prototype.build = DialogBuild
             modelFormat.delete()
         }
