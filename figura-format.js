@@ -73,7 +73,7 @@
 
             Blockbench.showMessageBox = function (options, callback) {
                 if (Format.id == 'figura' && options.translateKey == "duplicate_groups") return
-                showMessageBox.apply(this, options, callback)
+                showMessageBox.apply(this, [options, callback])
             }
 
             BarItems['export_animation_file'].condition = () => Format.id != 'figura'
