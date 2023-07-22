@@ -1,11 +1,11 @@
 (function () {
 
-    let modelFormat
+    let format
     let toggleMatchTextureSize = new Toggle('match-texture-size', {
         name: "Match Project UV with Texture Size",
         default: false,
         description: "Changes the ProjectUV so that it will always match the size of the active Texture.",
-        condition: () => Format.id == 'figura' && !Project.box_uv,
+        condition: () => Format === format && !Project.box_uv,
         onChange(state) {
             if (state)
                 updateProjectUV()
@@ -64,7 +64,7 @@
                 name: 'Cycle Vertex Order',
                 icon: 'fa-sync',
                 category: 'edit',
-                condition: { modes: ['edit'], features: ['meshes'], formats: ['figura'], method: () => (Mesh.selected[0] && Mesh.selected[0].getSelectedFaces().length) },
+                condition: { modes: ['edit'], features: ['meshes'], formats: [format.id], method: () => (Mesh.selected[0] && Mesh.selected[0].getSelectedFaces().length) },
                 click() {
                     Undo.initEdit({ elements: Mesh.selected });
                     Mesh.selected.forEach(mesh => {
@@ -81,39 +81,39 @@
                 }
             }))
 
-            Group.prototype.name_regex = () => Format.id == "figura" ? false : Format.bone_rig ? 'a-zA-Z0-9_' : false;
-            Group.prototype.needsUniqueName = () => Format.id == "figura" ? false : Format.bone_rig;
+            Group.prototype.name_regex = () => Format === format? false : Format.bone_rig ? 'a-zA-Z0-9_' : false;
+            Group.prototype.needsUniqueName = () => Format === format ? false : Format.bone_rig;
 
             let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
             if (molangSyntax)
-                molangSyntax.condition = () => Format.id == "figura" ? false : Format.animation_mode
+                molangSyntax.condition = () => Format === format ? false : Format.animation_mode
 
             let showMessageBox = Blockbench.showMessageBox
             Blockbench.showMessageBox = function (options, callback) {
-                if (Format.id == 'figura' && options.translateKey == "duplicate_groups") return
+                if (Format === format && options.translateKey == "duplicate_groups") return
                 showMessageBox.apply(this, [options, callback])
             }
 
             let addAnimationClick = BarItems['add_animation'].click
             BarItems['add_animation'].click = function () {
-                if (Format.id != 'figura') addAnimationClick.call(this)
+                if (Format !== format) addAnimationClick.call(this)
                 else
                     new Animation({
                         name: 'new',
                         saved: false
                     }).add(true).propertiesDialog()
             }
-            BarItems['export_animation_file'].condition = () => Format.id != 'figura'
+            BarItems['export_animation_file'].condition = () => Format !== format
 
-            Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format.id != 'figura'
+            Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format !== format
             let DialogBuild = Dialog.prototype.build
             Dialog.prototype.build = function () {
-                if (Format.id == 'figura' && this.id == 'texture_edit') delete this.form.render_mode
+                if (Format === format && this.id == 'texture_edit') delete this.form.render_mode
                 DialogBuild.call(this)
             }
 
             let callback
-            modelFormat = new ModelFormat('figura', {
+            format = new ModelFormat('figura', {
                 icon: 'change_history',
                 name: 'Figura',
                 description: 'Generic Format clone that removes features that Figura does not support.',
@@ -180,7 +180,7 @@
         onunload() {
             MenuBar.menus.tools.removeAction('match-texture-size')
             Toolbars.main_tools.remove('cycle_vertex_order')
-            modelFormat.delete()
+            format.delete()
         }
     });
 
