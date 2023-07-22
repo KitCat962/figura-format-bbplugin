@@ -18,4 +18,5 @@ The Plugin makes the following changes to improve clarity:
 * The Export Animations action has been removed
 
 Additionally, the Figura Project Format adds these features:
-* A Toggle to automatically set the Project UV to match the current texture size (Not available with BoxUV)
+* The "Match Project UV with Texture Size" Toggle under Tools, which will automatically set the Project UV to match the current texture to prevent the texture behaving weird in the preview (Not available with BoxUV)
+* The "Cycle Face Vertices action", which will allow you to change the triangulation of non-flat faces (You may need to use this multiple times, and/or invert the face for correct normals)
