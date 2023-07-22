@@ -48,14 +48,14 @@
 		}
 	}
 
-	BBPlugin.register('figura-format', {
+	BBPlugin.register('figura_format', {
 		title: 'Figura Model Format',
-		author: 'Katt',
+		author: 'Katt (KitCat962)',
 		icon: 'change_history',
-		description: 'A custom Model Format for use with the Figura mod, stripping Blockbench features that are incompatible.',
+		description: "Adds a project format used for the Figura mod that removes features that Figura does not support and makes minor changes to clarify weird Figura behavior.",
+		tags: ['Minecraft: Java Edition', 'Figura'],
 		version: '0.1.0',
 		min_version: '4.7.0',
-		tags: ['Minecraft: Java Edition', 'Figura'],
 		variant: 'both',
 		await_loading: true,
 		onload() {
