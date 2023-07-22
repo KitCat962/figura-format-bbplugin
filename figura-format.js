@@ -1,9 +1,6 @@
 (function () {
 
     let modelFormat
-    let addAnimationClick = BarItems['add_animation'].click
-    let DialogBuild = Dialog.prototype.build
-    let showMessageBox = Blockbench.showMessageBox
     let toggleMatchTextureSize = new Toggle('match-texture-size', {
         name: "Match Project UV with Texture Size",
         default: false,
@@ -91,12 +88,13 @@
             if (molangSyntax)
                 molangSyntax.condition = () => Format.id == "figura" ? false : Format.animation_mode
 
+            let showMessageBox = Blockbench.showMessageBox
             Blockbench.showMessageBox = function (options, callback) {
                 if (Format.id == 'figura' && options.translateKey == "duplicate_groups") return
                 showMessageBox.apply(this, [options, callback])
             }
 
-            BarItems['export_animation_file'].condition = () => Format.id != 'figura'
+            let addAnimationClick = BarItems['add_animation'].click
             BarItems['add_animation'].click = function () {
                 if (Format.id != 'figura') addAnimationClick.call(this)
                 else
@@ -105,8 +103,10 @@
                         saved: false
                     }).add(true).propertiesDialog()
             }
+            BarItems['export_animation_file'].condition = () => Format.id != 'figura'
 
             Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format.id != 'figura'
+            let DialogBuild = Dialog.prototype.build
             Dialog.prototype.build = function () {
                 if (Format.id == 'figura' && this.id == 'texture_edit') delete this.form.render_mode
                 DialogBuild.call(this)
@@ -179,9 +179,7 @@
         },
         onunload() {
             MenuBar.menus.tools.removeAction('match-texture-size')
-            Blockbench.showMessageBox = showMessageBox
-            BarItems['add_animation'].click = addAnimationClick
-            Dialog.prototype.build = DialogBuild
+            Toolbars.main_tools.remove('cycle_vertex_order')
             modelFormat.delete()
         }
     });
