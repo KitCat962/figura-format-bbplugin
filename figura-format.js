@@ -63,7 +63,13 @@
             format = new ModelFormat('figura', {
                 icon: 'change_history',
                 name: 'Figura',
-                description: 'Generic Format clone that removes features that Figura does not support.',
+                description: 'Model for the Figura mod.',
+                format_page: {
+                    content: [
+                        { text: 'This Format is fine tuned to work with the Figura Mod.' },
+                        { text: 'Functionally, this is a Generic Model clone with features that Figura does not support stripped away.' },
+                    ]
+                },
                 category: 'low_poly',
                 target: ['Figura'],
                 show_on_start_screen: true,
