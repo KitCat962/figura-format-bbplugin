@@ -59,61 +59,6 @@
         variant: 'both',
         await_loading: true,
         onload() {
-            MenuBar.menus.tools.addAction(toggleMatchTextureSize)
-            Toolbars.main_tools.add(new Action('cycle_vertex_order', {
-                name: 'Cycle Vertex Order',
-                icon: 'fa-sync',
-                category: 'edit',
-                condition: { modes: ['edit'], features: ['meshes'], formats: [format.id], method: () => (Mesh.selected[0] && Mesh.selected[0].getSelectedFaces().length) },
-                click() {
-                    Undo.initEdit({ elements: Mesh.selected });
-                    Mesh.selected.forEach(mesh => {
-                        for (let key in mesh.faces) {
-                            let face = mesh.faces[key];
-                            if (face.isSelected()) {
-                                if (face.vertices.length < 3) continue;
-                                [face.vertices[0], face.vertices[1], face.vertices[2], face.vertices[3]] = [face.vertices[1], face.vertices[2], face.vertices[3], face.vertices[0]];
-                            }
-                        }
-                    })
-                    Undo.finishEdit('Cycle face vertices');
-                    Canvas.updateView({ elements: Mesh.selected, element_aspects: { geometry: true, uv: true, faces: true } });
-                }
-            }))
-            let name_regex = Group.prototype.name_regex, needsUniqueName = Group.prototype.needsUniqueName
-            Group.prototype.name_regex = () => Format === format ? false : name_regex();
-            Group.prototype.needsUniqueName = () => Format === format ? false : needsUniqueName();
-
-            let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
-            if (molangSyntax) {
-                let method = molangSyntax.condition.method
-                molangSyntax.condition.method = (context) => Format === format ? false : (method ? method(context) : false)
-            }
-
-            let showMessageBox = Blockbench.showMessageBox
-            Blockbench.showMessageBox = function (options, callback) {
-                if (Format === format && options.translateKey == "duplicate_groups") return
-                showMessageBox.apply(this, [options, callback])
-            }
-
-            let addAnimationClick = BarItems['add_animation'].click
-            BarItems['add_animation'].click = function () {
-                if (Format !== format) addAnimationClick.call(this)
-                else
-                    new Animation({
-                        name: 'new',
-                        saved: false
-                    }).add(true).propertiesDialog()
-            }
-            BarItems['export_animation_file'].condition = () => Format !== format
-
-            Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format !== format
-            let DialogBuild = Dialog.prototype.build
-            Dialog.prototype.build = function () {
-                if (Format === format && this.id == 'texture_edit') delete this.form.render_mode
-                DialogBuild.call(this)
-            }
-
             let callback
             format = new ModelFormat('figura', {
                 icon: 'change_history',
@@ -178,6 +123,60 @@
                 }
             })
 
+            MenuBar.menus.tools.addAction(toggleMatchTextureSize)
+            Toolbars.main_tools.add(new Action('cycle_vertex_order', {
+                name: 'Cycle Vertex Order',
+                icon: 'fa-sync',
+                category: 'edit',
+                condition: { modes: ['edit'], features: ['meshes'], formats: [format.id], method: () => (Mesh.selected[0] && Mesh.selected[0].getSelectedFaces().length) },
+                click() {
+                    Undo.initEdit({ elements: Mesh.selected });
+                    Mesh.selected.forEach(mesh => {
+                        for (let key in mesh.faces) {
+                            let face = mesh.faces[key];
+                            if (face.isSelected()) {
+                                if (face.vertices.length < 3) continue;
+                                [face.vertices[0], face.vertices[1], face.vertices[2], face.vertices[3]] = [face.vertices[1], face.vertices[2], face.vertices[3], face.vertices[0]];
+                            }
+                        }
+                    })
+                    Undo.finishEdit('Cycle face vertices');
+                    Canvas.updateView({ elements: Mesh.selected, element_aspects: { geometry: true, uv: true, faces: true } });
+                }
+            }))
+            let name_regex = Group.prototype.name_regex, needsUniqueName = Group.prototype.needsUniqueName
+            Group.prototype.name_regex = () => Format === format ? false : name_regex();
+            Group.prototype.needsUniqueName = () => Format === format ? false : needsUniqueName();
+
+            let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
+            if (molangSyntax) {
+                let method = molangSyntax.condition.method
+                molangSyntax.condition.method = (context) => Format === format ? false : (method ? method(context) : false)
+            }
+
+            let showMessageBox = Blockbench.showMessageBox
+            Blockbench.showMessageBox = function (options, callback) {
+                if (Format === format && options.translateKey == "duplicate_groups") return
+                showMessageBox.apply(this, [options, callback])
+            }
+
+            let addAnimationClick = BarItems['add_animation'].click
+            BarItems['add_animation'].click = function () {
+                if (Format !== format) addAnimationClick.call(this)
+                else
+                    new Animation({
+                        name: 'new',
+                        saved: false
+                    }).add(true).propertiesDialog()
+            }
+            BarItems['export_animation_file'].condition = () => Format !== format
+
+            Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format !== format
+            let DialogBuild = Dialog.prototype.build
+            Dialog.prototype.build = function () {
+                if (Format === format && this.id == 'texture_edit') delete this.form.render_mode
+                DialogBuild.call(this)
+            }
         },
         onunload() {
             MenuBar.menus.tools.removeAction('match-texture-size')
