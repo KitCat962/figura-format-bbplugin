@@ -63,6 +63,26 @@
         await_loading: true,
         onload() {
             MenuBar.menus.tools.addAction(toggleMatchTextureSize)
+            Toolbars.main_tools.add(new Action('cycle_vertex_order', {
+                name: 'Cycle Vertex Order',
+                icon: 'fa-sync',
+                category: 'edit',
+                condition: { modes: ['edit'], features: ['meshes'], formats: ['figura'], method: () => (Mesh.selected[0] && Mesh.selected[0].getSelectedFaces().length) },
+                click() {
+                    Undo.initEdit({ elements: Mesh.selected });
+                    Mesh.selected.forEach(mesh => {
+                        for (let key in mesh.faces) {
+                            let face = mesh.faces[key];
+                            if (face.isSelected()) {
+                                if (face.vertices.length < 3) continue;
+                                [face.vertices[0], face.vertices[1], face.vertices[2], face.vertices[3]] = [face.vertices[1], face.vertices[2], face.vertices[3], face.vertices[0]];
+                            }
+                        }
+                    })
+                    Undo.finishEdit('Cycle face vertices');
+                    Canvas.updateView({ elements: Mesh.selected, element_aspects: { geometry: true, uv: true, faces: true } });
+                }
+            }))
 
             Group.prototype.name_regex = () => Format.id == "figura" ? false : Format.bone_rig ? 'a-zA-Z0-9_' : false;
             Group.prototype.needsUniqueName = () => Format.id == "figura" ? false : Format.bone_rig;
