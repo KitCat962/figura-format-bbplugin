@@ -1,61 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg viewBox="0 0 203.2 203.2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
-    <mask maskUnits="userSpaceOnUse" id="mask43">
-      <rect style="display:inline;fill:url(#linearGradient44);fill-opacity:1;stroke:none;stroke-width:13;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" id="rect44" width="203.2" height="203.2" x="-65.371284" y="111.62109"/>
-    </mask>
-    <linearGradient id="linearGradient44" gradientUnits="userSpaceOnUse" x1="-65.371284" y1="111.62109" x2="137.82872" y2="314.82108" gradientTransform="translate(1.4583333e-7)" xlink:href="#linearGradient42"/>
-    <linearGradient id="linearGradient42">
-      <stop style="stop-color:#ffffff;stop-opacity:1;" offset="0" id="stop41"/>
-      <stop style="stop-color:#000000;stop-opacity:1;" offset="1" id="stop42"/>
-    </linearGradient>
-    <clipPath clipPathUnits="userSpaceOnUse" id="clipPath35">
-      <ellipse style="fill:#088dd3;fill-opacity:1;stroke-width:0.264583" id="ellipse36" cx="36.228714" cy="213.2211" rx="101.6" ry="101.80915"/>
-    </clipPath>
-    <mask maskUnits="userSpaceOnUse" id="mask33">
-      <g style="display:inline;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:13;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" id="g35">
-        <path d="M 36.2287,154.203 -12.2054,251.072 129.216,392.493 177.65,295.625 Z" id="path33"/>
-        <path d="M -12.2054,251.072 H 84.6628 L 226.084,392.493 h -96.868 z" id="path34"/>
-        <path d="M 84.6628,251.072 36.2287,154.203 177.65,295.625 l 48.434,96.868 z" id="path35"/>
-      </g>
-    </mask>
-    <linearGradient id="linearGradient33" x1="-20.540535" y1="275.19995" x2="74.4422" y2="192.41669" gradientUnits="userSpaceOnUse" xlink:href="#linearGradient31"/>
-    <linearGradient id="linearGradient31">
-      <stop style="stop-color:#000000;stop-opacity:0.25655976;" offset="0" id="stop32"/>
-      <stop style="stop-color:#000000;stop-opacity:0;" offset="1" id="stop33"/>
-    </linearGradient>
-    <linearGradient id="linearGradient36" gradientUnits="userSpaceOnUse" x1="82.885765" y1="187.51778" x2="43.503395" y2="251.0715" xlink:href="#linearGradient37"/>
-    <linearGradient id="linearGradient37">
-      <stop style="stop-color:#000000;stop-opacity:0.24489796;" offset="0" id="stop36"/>
-      <stop style="stop-color:#000000;stop-opacity:0;" offset="1" id="stop37"/>
-    </linearGradient>
-    <linearGradient id="linearGradient45" gradientUnits="userSpaceOnUse" x1="64.115379" y1="235.06052" x2="107.71279" y2="274.12195" xlink:href="#linearGradient50"/>
-    <linearGradient id="linearGradient50">
-      <stop style="stop-color:#000000;stop-opacity:0.67055392;" offset="0" id="stop49"/>
-      <stop style="stop-color:#000000;stop-opacity:0;" offset="1" id="stop50"/>
-    </linearGradient>
-    <filter style="color-interpolation-filters:sRGB" id="filter67" x="-0.45324059" y="-0.45322947" width="1.9064812" height="1.9064813">
-      <feGaussianBlur stdDeviation="11.002363" id="feGaussianBlur67"/>
-    </filter>
-    <linearGradient id="linearGradient56" x1="17.571072" y1="191.51862" x2="55.244778" y2="232.12518" gradientUnits="userSpaceOnUse" xlink:href="#linearGradient54"/>
+    <linearGradient id="linearGradient56" x1="17.571072" y1="191.51862" x2="55.244778" y2="232.12518" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1, 0, 0, 1, 0, 0)" xlink:href="#linearGradient54"/>
     <linearGradient id="linearGradient54">
-      <stop style="stop-color:#000000;stop-opacity:0.49854228;" offset="0" id="stop55"/>
+      <stop style="stop-opacity: 0.498542;" offset="0" id="stop55"/>
       <stop style="stop-color:#000000;stop-opacity:0;" offset="1" id="stop56"/>
     </linearGradient>
   </defs>
   <g id="layer1" transform="matrix(1, 0, 0, 1, 65.37128448486328, -111.62109375)">
     <ellipse style="fill: rgb(8, 141, 211); stroke-width: 0.264583; fill-opacity: 1;" id="path1" cx="36.228714" cy="213.2211" rx="101.6" ry="101.80915" transform="translate(1.4583333e-7)"/>
-    <g id="g43" mask="url(#mask43)">
-      <g id="g33" mask="url(#mask33)" transform="translate(1.4583333e-7)" clip-path="url(#clipPath35)">
-        <rect style="fill: url(#linearGradient33); fill-opacity: 1; stroke: none; stroke-width: 13; stroke-linejoin: round; stroke-dasharray: none; stroke-opacity: 1;" id="rect28" width="203.2" height="203.2" x="-65.371284" y="111.62109"/>
-        <rect style="fill: url(#linearGradient36); fill-opacity: 1; stroke: none; stroke-width: 13; stroke-linejoin: round; stroke-dasharray: none; stroke-opacity: 1;" id="rect36" width="203.2" height="203.2" x="-65.371284" y="111.62109"/>
-        <rect style="fill: url(#linearGradient45); fill-opacity: 1; stroke: none; stroke-width: 13; stroke-linejoin: round; stroke-dasharray: none; stroke-opacity: 1;" id="rect45" width="203.2" height="203.2" x="-65.371284" y="111.62109"/>
-        <path style="fill: none; fill-opacity: 1; stroke: rgb(0, 0, 0); stroke-width: 35; stroke-linejoin: round; stroke-dasharray: none; stroke-opacity: 1; filter: url(#filter67);" d="m 36.228715,154.20334 -48.434088,96.86817 h 96.868179 z" id="path2-5" transform="translate(0)"/>
-      </g>
-    </g>
-    <g id="g23">
-      <path style="fill: rgb(8, 141, 211); fill-opacity: 1; stroke: rgb(255, 255, 255); stroke-width: 13; stroke-linejoin: round; stroke-dasharray: none; stroke-opacity: 1;" d="m 36.228715,154.20334 -48.434088,96.86817 h 96.868175 z" id="path2" transform="translate(1.4583333e-7)"/>
-      <path style="fill: url(#linearGradient56); fill-opacity: 1; stroke: rgb(255, 255, 255); stroke-width: 13; stroke-dasharray: none; stroke-opacity: 1; stroke-linejoin: round;" d="m 36.228715,154.20334 -48.434088,96.86817 h 96.868175 z" id="path56" transform="translate(1.4583333e-7)"/>
-    </g>
+    <path style="stroke: rgb(255, 255, 255); stroke-width: 13; stroke-linejoin: round; stroke-dasharray: none; stroke-opacity: 1; fill: none;" d="M 36.229 154.203 L -12.205 251.072 L 84.663 251.072 L 36.229 154.203 Z" id="path2"/>
+    <path style="fill: url(#linearGradient56); fill-opacity: 1; stroke: rgb(255, 255, 255); stroke-width: 13; stroke-dasharray: none; stroke-opacity: 1; stroke-linejoin: round; visibility: hidden;" d="M 36.229 154.203 L -12.205 251.072 L 84.663 251.072 L 36.229 154.203 Z" id="path56"/>
   </g>
 </svg>
