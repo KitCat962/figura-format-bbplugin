@@ -62,7 +62,7 @@
 			let callback
 			format = new ModelFormat('figura', {
 				icon: 'change_history',
-				name: 'Figura',
+				name: 'Figura Model',
 				description: 'Model for the Figura mod.',
 				format_page: {
 					content: [
