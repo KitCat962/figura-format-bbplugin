@@ -58,6 +58,7 @@
 		min_version: '4.8.0',
 		variant: 'both',
 		await_loading: true,
+		creation_date: "2023-07-22",
 		onload() {
 			let callback
 			let particle = EffectAnimator.prototype.channels.particle, sound = EffectAnimator.prototype.channels.sound
