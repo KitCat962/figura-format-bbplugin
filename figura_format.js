@@ -60,6 +60,7 @@
 		await_loading: true,
 		onload() {
 			let callback
+			let particle = EffectAnimator.prototype.channels.particle, sound = EffectAnimator.prototype.channels.sound
 			format = new ModelFormat('figura', {
 				icon: 'change_history',
 				name: 'Figura Model',
@@ -131,24 +132,20 @@
 					Language.addTranslations('en', {
 						['menu.animation.anim_time_update']: "Start Offset",
 						['menu.animation.override']: "Override Vanilla Animations",
-						['timeline.particle']: "N/A",
-						['timeline.sound']: "N/A",
-						['timeline.timeline']: "Lua Script",
 					})
-					for (const [type, data] of Object.entries(EffectAnimator.prototype.channels))
-						data.name = tl(`timeline.${type}`)
+					delete EffectAnimator.prototype.channels.particle
+					delete EffectAnimator.prototype.channels.sound
+					EffectAnimator.prototype.channels.timeline.name = "Lua Script"
 				},
 				onDeactivation() {
 					callback.delete()
 					Language.addTranslations('en', {
 						['menu.animation.anim_time_update']: "Anim Time Update",
 						['menu.animation.override']: "Override",
-						['timeline.particle']: "Particle",
-						['timeline.sound']: "Sound",
-						['timeline.timeline']: "Instructions",
 					})
-					for (const [type, data] of Object.entries(EffectAnimator.prototype.channels))
-						data.name = tl(`timeline.${type}`)
+					EffectAnimator.prototype.channels.particle = particle
+					EffectAnimator.prototype.channels.sound = sound
+					EffectAnimator.prototype.channels.timeline.name = tl('timeline.timeline')
 				}
 			})
 
@@ -205,6 +202,12 @@
 			Dialog.prototype.build = function () {
 				if (Format === format && this.id == 'texture_edit') delete this.form.render_mode
 				DialogBuild.call(this)
+			}
+
+			let displayFrame = EffectAnimator.prototype.displayFrame
+			EffectAnimator.prototype.displayFrame = function(){
+				if (Format === format) return
+				displayFrame.call(this)
 			}
 		},
 		onunload() {
