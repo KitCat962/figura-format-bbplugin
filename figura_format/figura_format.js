@@ -49,14 +49,14 @@
 	}
 
 	BBPlugin.register('figura_format', {
-		title: 'Figura Model Format',
-		author: 'Katt (KitCat962)',
-		icon: 'icon.svg',
+		title: "Figura Model Format",
+		author: "Katt (KitCat962)",
+		icon: "icon.svg",
 		description: "Create models for the Figura mod without unusable Blockbench features getting in the way.",
-		tags: ['Minecraft: Java Edition', 'Figura'],
-		version: '0.1.1',
-		min_version: '4.8.0',
-		variant: 'both',
+		tags: ["Minecraft: Java Edition", "Figura"],
+		version: "0.1.1",
+		min_version: "4.8.0",
+		variant: "both",
 		await_loading: true,
 		creation_date: "2023-07-22",
 		onload() {
