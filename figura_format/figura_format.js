@@ -54,7 +54,7 @@
 		icon: 'icon.svg',
 		description: "Create models for the Figura mod without unusable Blockbench features getting in the way.",
 		tags: ['Minecraft: Java Edition', 'Figura'],
-		version: '0.1.0',
+		version: '0.1.1',
 		min_version: '4.8.0',
 		variant: 'both',
 		await_loading: true,
