@@ -52,7 +52,7 @@
 		title: 'Figura Model Format',
 		author: 'Katt (KitCat962)',
 		icon: 'icon.svg',
-		description: "Adds a project format used for the Figura mod that removes features that Figura does not support and makes minor changes to clarify weird Figura behavior.",
+		description: "Create models for the Figura mod without unusable Blockbench features getting in the way.",
 		tags: ['Minecraft: Java Edition', 'Figura'],
 		version: '0.1.0',
 		min_version: '4.8.0',
