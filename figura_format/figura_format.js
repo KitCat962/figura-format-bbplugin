@@ -207,7 +207,28 @@
 						saved: false
 					}).add(true).propertiesDialog()
 			}
-			BarItems['export_animation_file'].condition = () => Format !== format
+			let exportAnimationClick = BarItems['export_animation_file'].click
+			BarItems['export_animation_file'].click = function(...args){
+				let button = this
+				if (Format !== format) {
+					exportAnimationClick.call(button, ...args)
+					return
+				}
+				new Dialog({
+					id:"figura_confirm_export_animation",
+					title:"Confirm Export Animations",
+					lines:[
+						"<p><strong>Figura does not read these exported Animation files.</strong></p>",
+						"<p>Figura reads animations directly from the Blockbench file itself.</p>",
+						"<p>The Export Animmations button should only be used when transfering animations from one bbmodel to another.</p>",
+						"<p>Otherwise, do not touch this button.</p>",
+						"<p>Do you understand, and want the exported animations anyways?</p>"
+					],
+					onConfirm(){
+						exportAnimationClick.call(button, ...args)
+					}
+				}).show()
+			}
 
 			Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format !== format
 			let DialogBuild = Dialog.prototype.build
