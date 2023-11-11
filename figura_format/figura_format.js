@@ -188,9 +188,6 @@
 					Canvas.updateView({ elements: Mesh.selected, element_aspects: { geometry: true, uv: true, faces: true } });
 				}
 			}))
-			let name_regex = Group.prototype.name_regex, needsUniqueName = Group.prototype.needsUniqueName
-			Group.prototype.name_regex = () => Format === format ? false : name_regex();
-			Group.prototype.needsUniqueName = () => Format === format ? false : needsUniqueName();
 
 			let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
 			if (molangSyntax) {
@@ -200,12 +197,6 @@
 			Validator.checks.push(
 				validateMeshFaces
 			)
-
-			let showMessageBox = Blockbench.showMessageBox
-			Blockbench.showMessageBox = function (options, callback) {
-				if (Format === format && options.translateKey == "duplicate_groups") return
-				showMessageBox.apply(this, [options, callback])
-			}
 
 			let addAnimationClick = BarItems['add_animation'].click
 			BarItems['add_animation'].click = function () {
