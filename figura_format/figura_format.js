@@ -48,6 +48,52 @@
 		}
 	}
 
+	let validateMeshFaces = new ValidatorCheck('figura_mesh_face_rule', {
+		update_triggers: ['update_selection'],
+		condition: {
+			method: (context) => Format === format && Mesh.hasAny()
+		},
+		run() {
+			Mesh.all.forEach(mesh => {
+				mesh.forAllFaces(face => {
+					if (![3,4].includes(face.vertices.length)) {
+						this.warn({
+							message: `Mesh ${mesh.name} has invalid face ${face.getFaceKey()} with ${face.vertices.length} vertices`,
+							buttons: [{
+								name: "Select Mesh",
+								icon: "fa-gem",
+								click() {
+									mesh.select()
+									BarItems.selection_mode.change('face')
+
+									// It works best when I select all possible selections, even though I only need to select faces.
+									let selectedVertices = mesh.getSelectedVertices(true)
+									selectedVertices.empty()
+									selectedVertices.push(...face.vertices)
+
+									let selectedEdges = mesh.getSelectedEdges(true)
+									selectedEdges.empty()
+									for (i = 0; i < face.vertices.length; i++)
+										selectedEdges.push([face.vertices[i], face.vertices[(i + 1) % face.vertices.length]])
+
+									let selectedFaces = mesh.getSelectedFaces(true)
+									selectedFaces.empty()
+									selectedFaces.push(face.getFaceKey())
+
+									// UV Editor for completeness
+									UVEditor.vue.selected_faces.empty();
+									UVEditor.vue.selected_faces.safePush(face.getFaceKey());
+									updateSelection()
+									Validator.dialog.hide()
+								}
+							}]
+						})
+					}
+				})
+			})
+		}
+	})
+
 	BBPlugin.register('figura_format', {
 		title: "Figura Model Format",
 		author: "Katt (KitCat962)",
@@ -151,6 +197,9 @@
 				let method = molangSyntax.condition.method
 				molangSyntax.condition.method = (context) => Format === format ? false : (method ? method(context) : false)
 			}
+			Validator.checks.push(
+				validateMeshFaces
+			)
 
 			let showMessageBox = Blockbench.showMessageBox
 			Blockbench.showMessageBox = function (options, callback) {
@@ -177,7 +226,7 @@
 			}
 
 			let displayFrame = EffectAnimator.prototype.displayFrame
-			EffectAnimator.prototype.displayFrame = function(){
+			EffectAnimator.prototype.displayFrame = function () {
 				if (Format === format) return
 				displayFrame.call(this)
 			}
