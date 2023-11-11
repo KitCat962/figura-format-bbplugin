@@ -194,9 +194,6 @@
 				let method = molangSyntax.condition.method
 				molangSyntax.condition.method = (context) => Format === format ? false : (method ? method(context) : false)
 			}
-			Validator.checks.push(
-				validateMeshFaces
-			)
 
 			let addAnimationClick = BarItems['add_animation'].click
 			BarItems['add_animation'].click = function () {
