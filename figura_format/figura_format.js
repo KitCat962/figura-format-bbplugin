@@ -120,6 +120,64 @@
 		}
 	})
 
+	// Stolen from line 92 of timeline_animators.js
+	function getOrMakeKeyframe(animator, channel, time, snapping = 24) {
+		let before;
+		let epsilon = (1 / Math.clamp(snapping, 1, 120)) / 2 || 0.01;
+
+		for (let kf of animator[channel]) {
+			if (Math.abs(kf.time - time) <= epsilon) {
+				before = kf;
+			}
+		}
+		return before ? before : animator.createKeyframe(null, time, channel, false, false);
+	}
+	let bakeIkIntoAnimation = new Action('figura-bake-ik', {
+		name: "Bake IK into Animations",
+		description: "Bakes Inverse Kinematics into raw Keyframes for use in Figura",
+		icon: "fa-bone",
+		condition: { modes: ['animate'], method: () => /*Format === format &&*/ Animation.selected },
+		click() {
+			new Dialog({
+				id: "figura_confirm_bake_ik",
+				title: "Confirm Bake Inverse Kinematics",
+				lines: [
+					"<p>This bakes the IK of all NullObjects onto the keyframes of the groups themselves, allowing it to be visible in Figura</p>",
+					"<p>However, NullObjects <strong>override</strong> the keyframes of the affected groups while it is present</p>",
+					"<p>Leaving the NullObject in the model has no effect on Figura, so just leave it incase you want to rebake the IK later</p>"
+				],
+				form: {
+					"all_animations": {
+						type: 'checkbox',
+						label: 'Bake all Animations?',
+						description: "This Action will normally only bake the selected Animation. Do you want to bake all Animations in one swoop?",
+						value: false,
+						full_width: false
+					}
+				},
+				onConfirm() {
+					const animations = this.getFormResult().all_animations ? Animator.animations : [Animation.selected]
+					for (const animation of animations) {
+						let animators = animation.animators
+
+						// Inverse Kinematics
+						let ik_samples = animation.sampleIK();
+						for (let uuid in ik_samples) {
+							//let group = OutlinerNode.uuids[uuid];
+							ik_samples[uuid].forEach((rotation, i) => {
+								let timecode = i / animation.snapping
+								let kf = getOrMakeKeyframe(animators[uuid], 'rotation', timecode, animation.snapping)
+								kf.set('x', rotation.array[0])
+								kf.set('y', rotation.array[1])
+								kf.set('z', rotation.array[2])
+							})
+						}
+					}
+				}
+			}).show()
+		}
+	})
+
 	new ValidatorCheck('figura_mesh_face_rule', {
 		update_triggers: ['update_selection'],
 		condition: {
@@ -243,6 +301,7 @@
 			Mesh.prototype.menu.addAction(copyModelPartPath, '#manage');
 			Group.prototype.menu.addAction(copyModelPartPath, '#manage');
 			MenuBar.menus.edit.addAction(toggleMatchTextureSize, '#editing_mode')
+			MenuBar.menus.animation.addAction(bakeIkIntoAnimation, '#edit')
 			Toolbars.main_tools.add(cycleVertexOrder)
 
 			// Remove the Texture Render Mode field from the Right Click context menu.
