@@ -47,6 +47,56 @@
 			Canvas.updateAllUVs()
 		}
 	}
+	
+    function isValidLuaIdentifier(str){
+		const keywords = [
+			"and",
+			"break",
+			"do",
+			"else",
+			"elseif",
+			"end",
+			"false",
+			"for",
+			"function",
+			"if",
+			"in",
+			"local",
+			"nil",
+			"not",
+			"or",
+			"repeat",
+			"return",
+			"then",
+			"true",
+			"until",
+			"while",
+		]
+        return (
+            typeof str == "string"
+            && str.search(/^[a-zA-Z0-9_]+$/)!==-1
+            && str.search(/^[0-9]/)===-1
+            && !keywords.includes(str)
+        )
+	}
+	let copyModelPartPath = new Action('figura-copy-path',{
+		name: "Copy ModelPart Path",
+		description: "Calculates the scripting path to this ModelPart and copies it to the clipboard.",
+		icon:"fa-clipboard",
+		condition: () => Format === format && Outliner.selected.length===1,
+		click(){
+			let path = []
+			let element = Outliner.selected[0]
+			while(element!=="root"){
+				path.unshift(element.name)
+				element=element.parent;
+			}
+			path.unshift(Project.name || "modelName")
+			path = path.map(index=>isValidLuaIdentifier(index)?`.${index}`:`["${index}"]`)
+			path.unshift('models')
+			navigator.clipboard.writeText(path.join(""))
+		}
+	})
 
 	let validateMeshFaces = new ValidatorCheck('figura_mesh_face_rule', {
 		update_triggers: ['update_selection'],
@@ -227,6 +277,9 @@
 				}).show()
 			}
 
+			Cube.prototype.menu.addAction(copyModelPartPath, '#manage');
+			Mesh.prototype.menu.addAction(copyModelPartPath, '#manage');
+			Group.prototype.menu.addAction(copyModelPartPath, '#manage');
 			Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format !== format
 			let DialogBuild = Dialog.prototype.build
 			Dialog.prototype.build = function () {
