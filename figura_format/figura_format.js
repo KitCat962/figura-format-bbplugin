@@ -47,8 +47,8 @@
 			Canvas.updateAllUVs()
 		}
 	}
-	
-    function isValidLuaIdentifier(str){
+
+	function isValidLuaIdentifier(str) {
 		const keywords = [
 			"and",
 			"break",
@@ -72,27 +72,27 @@
 			"until",
 			"while",
 		]
-        return (
-            typeof str == "string"
-            && str.search(/^[a-zA-Z0-9_]+$/)!==-1
-            && str.search(/^[0-9]/)===-1
-            && !keywords.includes(str)
-        )
+		return (
+			typeof str == "string"
+			&& str.search(/^[a-zA-Z0-9_]+$/) !== -1
+			&& str.search(/^[0-9]/) === -1
+			&& !keywords.includes(str)
+		)
 	}
-	let copyModelPartPath = new Action('figura-copy-path',{
+	let copyModelPartPath = new Action('figura-copy-path', {
 		name: "Copy ModelPart Path",
 		description: "Calculates the scripting path to this ModelPart and copies it to the clipboard.",
-		icon:"fa-clipboard",
-		condition: () => Format === format && Outliner.selected.length===1,
-		click(){
+		icon: "fa-clipboard",
+		condition: () => Format === format && Outliner.selected.length === 1,
+		click() {
 			let path = []
 			let element = Outliner.selected[0]
-			while(element!=="root"){
+			while (element !== "root") {
 				path.unshift(element.name)
-				element=element.parent;
+				element = element.parent;
 			}
 			path.unshift(Project.name || "modelName")
-			path = path.map(index=>isValidLuaIdentifier(index)?`.${index}`:`["${index}"]`)
+			path = path.map(index => isValidLuaIdentifier(index) ? `.${index}` : `["${index}"]`)
 			path.unshift('models')
 			navigator.clipboard.writeText(path.join(""))
 		}
@@ -106,7 +106,7 @@
 		run() {
 			Mesh.all.forEach(mesh => {
 				mesh.forAllFaces(face => {
-					if (![3,4].includes(face.vertices.length)) {
+					if (![3, 4].includes(face.vertices.length)) {
 						this.warn({
 							message: `Mesh ${mesh.name} has invalid face ${face.getFaceKey()} with ${face.vertices.length} vertices`,
 							buttons: [{
@@ -255,23 +255,23 @@
 					}).add(true).propertiesDialog()
 			}
 			let exportAnimationClick = BarItems['export_animation_file'].click
-			BarItems['export_animation_file'].click = function(...args){
+			BarItems['export_animation_file'].click = function (...args) {
 				let button = this
 				if (Format !== format) {
 					exportAnimationClick.call(button, ...args)
 					return
 				}
 				new Dialog({
-					id:"figura_confirm_export_animation",
-					title:"Confirm Export Animations",
-					lines:[
+					id: "figura_confirm_export_animation",
+					title: "Confirm Export Animations",
+					lines: [
 						"<p><strong>Figura does not read these exported Animation files.</strong></p>",
 						"<p>Figura reads animations directly from the Blockbench file itself.</p>",
 						"<p>The Export Animmations button should only be used when transfering animations from one bbmodel to another.</p>",
 						"<p>Otherwise, do not touch this button.</p>",
 						"<p>Do you understand, and want the exported animations anyways?</p>"
 					],
-					onConfirm(){
+					onConfirm() {
 						exportAnimationClick.call(button, ...args)
 					}
 				}).show()
