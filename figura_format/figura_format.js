@@ -1,16 +1,7 @@
 (function () {
 
 	let format
-	let toggleMatchTextureSize = new Toggle('match-texture-size', {
-		name: "Match Project UV with Texture Size",
-		default: false,
-		description: "Changes the ProjectUV so that it will always match the size of the active Texture.",
-		condition: () => Format === format && !Project.box_uv,
-		onChange(state) {
-			if (state)
-				updateProjectUV()
-		}
-	})
+
 	let _width = 0, _height = 0
 	function updateProjectUV() {
 		if (Project.box_uv) return
@@ -47,6 +38,16 @@
 			Canvas.updateAllUVs()
 		}
 	}
+	let toggleMatchTextureSize = new Toggle('match-texture-size', {
+		name: "Match Project UV with Texture Size",
+		default: false,
+		description: "Changes the ProjectUV so that it will always match the size of the active Texture.",
+		condition: () => Format === format && !Project.box_uv,
+		onChange(state) {
+			if (state)
+				updateProjectUV()
+		}
+	})
 
 	function isValidLuaIdentifier(str) {
 		const keywords = [
@@ -98,7 +99,28 @@
 		}
 	})
 
-	let validateMeshFaces = new ValidatorCheck('figura_mesh_face_rule', {
+	let cycleVertexOrder = new Action('cycle_vertex_order', {
+		name: 'Cycle Vertex Order',
+		icon: 'fa-sync',
+		category: 'edit',
+		condition: { modes: ['edit'], features: ['meshes'], method: () => Format === format && (Mesh.selected[0] && Mesh.selected[0].getSelectedFaces().length) },
+		click() {
+			Undo.initEdit({ elements: Mesh.selected });
+			Mesh.selected.forEach(mesh => {
+				for (let key in mesh.faces) {
+					let face = mesh.faces[key];
+					if (face.isSelected()) {
+						if (face.vertices.length < 3) continue;
+						[face.vertices[0], face.vertices[1], face.vertices[2], face.vertices[3]] = [face.vertices[1], face.vertices[2], face.vertices[3], face.vertices[0]];
+					}
+				}
+			})
+			Undo.finishEdit('Cycle face vertices');
+			Canvas.updateView({ elements: Mesh.selected, element_aspects: { geometry: true, uv: true, faces: true } });
+		}
+	})
+
+	new ValidatorCheck('figura_mesh_face_rule', {
 		update_triggers: ['update_selection'],
 		condition: {
 			method: (context) => Format === format && Mesh.hasAny()
@@ -107,7 +129,7 @@
 			Mesh.all.forEach(mesh => {
 				mesh.forAllFaces(face => {
 					if (![3, 4].includes(face.vertices.length)) {
-						this.warn({
+						this.error({
 							message: `Mesh ${mesh.name} has invalid face ${face.getFaceKey()} with ${face.vertices.length} vertices`,
 							buttons: [{
 								name: "Select Mesh",
@@ -203,7 +225,7 @@
 					})
 					delete EffectAnimator.prototype.channels.particle
 					delete EffectAnimator.prototype.channels.sound
-					EffectAnimator.prototype.channels.timeline.name = "Lua Script"
+					EffectAnimator.prototype.channels.timeline.name = "Instruction (Lua Script)"
 				},
 				onDeactivation() {
 					callback.delete()
@@ -217,34 +239,23 @@
 				}
 			})
 
-			MenuBar.menus.tools.addAction(toggleMatchTextureSize)
-			Toolbars.main_tools.add(new Action('cycle_vertex_order', {
-				name: 'Cycle Vertex Order',
-				icon: 'fa-sync',
-				category: 'edit',
-				condition: { modes: ['edit'], features: ['meshes'], formats: [format.id], method: () => (Mesh.selected[0] && Mesh.selected[0].getSelectedFaces().length) },
-				click() {
-					Undo.initEdit({ elements: Mesh.selected });
-					Mesh.selected.forEach(mesh => {
-						for (let key in mesh.faces) {
-							let face = mesh.faces[key];
-							if (face.isSelected()) {
-								if (face.vertices.length < 3) continue;
-								[face.vertices[0], face.vertices[1], face.vertices[2], face.vertices[3]] = [face.vertices[1], face.vertices[2], face.vertices[3], face.vertices[0]];
-							}
-						}
-					})
-					Undo.finishEdit('Cycle face vertices');
-					Canvas.updateView({ elements: Mesh.selected, element_aspects: { geometry: true, uv: true, faces: true } });
-				}
-			}))
+			Cube.prototype.menu.addAction(copyModelPartPath, '#manage');
+			Mesh.prototype.menu.addAction(copyModelPartPath, '#manage');
+			Group.prototype.menu.addAction(copyModelPartPath, '#manage');
+			MenuBar.menus.edit.addAction(toggleMatchTextureSize, '#editing_mode')
+			Toolbars.main_tools.add(cycleVertexOrder)
 
+			// Remove the Texture Render Mode field from the Right Click context menu.
+			Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format !== format
+
+			// Remove molang validation, as Figura uses Lua not molang
 			let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
 			if (molangSyntax) {
 				let method = molangSyntax.condition.method
 				molangSyntax.condition.method = (context) => Format === format ? false : (method ? method(context) : false)
 			}
 
+			// Change the default name of new Animations from `animation.model.new` to just `new`
 			let addAnimationClick = BarItems['add_animation'].click
 			BarItems['add_animation'].click = function () {
 				if (Format !== format) addAnimationClick.call(this)
@@ -254,6 +265,7 @@
 						saved: false
 					}).add(true).propertiesDialog()
 			}
+			// Add a popup when clicking on Export Textures to notify new users
 			let exportAnimationClick = BarItems['export_animation_file'].click
 			BarItems['export_animation_file'].click = function (...args) {
 				let button = this
@@ -277,16 +289,14 @@
 				}).show()
 			}
 
-			Cube.prototype.menu.addAction(copyModelPartPath, '#manage');
-			Mesh.prototype.menu.addAction(copyModelPartPath, '#manage');
-			Group.prototype.menu.addAction(copyModelPartPath, '#manage');
-			Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format !== format
+			// In the Texture Properties Dialog specifically, remove the Render Mode field
 			let DialogBuild = Dialog.prototype.build
 			Dialog.prototype.build = function () {
 				if (Format === format && this.id == 'texture_edit') delete this.form.render_mode
 				DialogBuild.call(this)
 			}
 
+			// Prevents the Timeline from erroring when Sound and Particle channels are removed
 			let displayFrame = EffectAnimator.prototype.displayFrame
 			EffectAnimator.prototype.displayFrame = function () {
 				if (Format === format) return
