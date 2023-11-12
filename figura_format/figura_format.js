@@ -187,7 +187,7 @@
 			Mesh.all.forEach(mesh => {
 				mesh.forAllFaces(face => {
 					if (![3, 4].includes(face.vertices.length)) {
-						this.error({
+						this.fail({
 							message: `Mesh ${mesh.name} has invalid face ${face.getFaceKey()} with ${face.vertices.length} vertices`,
 							buttons: [{
 								name: "Select Mesh",
