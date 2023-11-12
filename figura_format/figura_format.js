@@ -258,7 +258,7 @@
 				integer_size: false,
 				meshes: true,
 				texture_meshes: false,
-				locators: false,
+				locators: true,
 				rotation_limit: false,
 				uv_rotation: true,
 				java_face_properties: false,
