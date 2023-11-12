@@ -136,7 +136,7 @@
 		name: "Bake IK into Animations",
 		description: "Bakes Inverse Kinematics into raw Keyframes for use in Figura",
 		icon: "fa-bone",
-		condition: { modes: ['animate'], method: () => /*Format === format &&*/ Animation.selected },
+		condition: { modes: ['animate'], method: () => Format === format && Animation.selected },
 		click() {
 			new Dialog({
 				id: "figura_confirm_bake_ik",
