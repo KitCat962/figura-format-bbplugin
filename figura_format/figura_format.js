@@ -38,7 +38,7 @@
 			Canvas.updateAllUVs()
 		}
 	}
-	let toggleMatchTextureSize = new Toggle('match-texture-size', {
+	let toggleMatchTextureSize = new Toggle('match_texture_size', {
 		name: "Match Project UV with Texture Size",
 		default: false,
 		description: "Changes the ProjectUV so that it will always match the size of the active Texture.",
@@ -80,7 +80,7 @@
 			&& !keywords.includes(str)
 		)
 	}
-	let copyModelPartPath = new Action('figura-copy-path', {
+	let copyModelPartPath = new Action('figura_copy_path', {
 		name: "Copy ModelPart Path",
 		description: "Calculates the scripting path to this ModelPart and copies it to the clipboard.",
 		icon: "fa-clipboard",
@@ -132,7 +132,7 @@
 		}
 		return before ? before : animator.createKeyframe(null, time, channel, false, false);
 	}
-	let bakeIkIntoAnimation = new Action('figura-bake-ik', {
+	let bakeIkIntoAnimation = new Action('figura_bake_ik', {
 		name: "Bake IK into Animations",
 		description: "Bakes Inverse Kinematics into raw Keyframes for use in Figura",
 		icon: "fa-bone",
@@ -366,7 +366,7 @@
 			}
 		},
 		onunload() {
-			MenuBar.menus.tools.removeAction('match-texture-size')
+			MenuBar.menus.tools.removeAction('match_texture_size')
 			Toolbars.main_tools.remove('cycle_vertex_order')
 			format.delete()
 		}
