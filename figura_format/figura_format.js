@@ -247,6 +247,9 @@
 
 			// Remove the Texture Render Mode field from the Right Click context menu.
 			Texture.prototype.menu.structure.find(v => v.name == 'menu.texture.render_mode').condition = () => Format !== format
+			// Removed the Render Order field from the Right Click context menu.
+			let elementRenderOrderCondition = BarItems.element_render_order.condition
+			BarItems.element_render_order.condition = () => Format === format ? false : elementRenderOrderCondition()
 
 			// Remove molang validation, as Figura uses Lua not molang
 			let molangSyntax = Validator.checks.find(element => element.id == 'molang_syntax')
