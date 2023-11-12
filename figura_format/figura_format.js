@@ -3,11 +3,13 @@
 	function updateProjectUV() {
 		if (Project.box_uv) return
 
+		let texture = UVEditor.texture != 0 ? UVEditor.texture : Texture.selected
+		if (!texture) return
+
 		Cube.all.forEach(cube => {
 			cube.setUVMode(false);
 		})
 
-		let texture = UVEditor.texture != 0 ? UVEditor.texture : Texture.selected
 		let texture_width = texture.width,
 			texture_height = texture.height
 		if (texture != null && (texture_width != _width || texture_height != _height)) {
