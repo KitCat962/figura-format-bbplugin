@@ -194,10 +194,10 @@
 				name: "Copy ModelPart Path",
 				description: "Calculates the scripting path to this ModelPart and copies it to the clipboard.",
 				icon: "fa-clipboard",
-				condition: () => Format === format && Outliner.selected.length === 1,
+				condition: () => Format === format && (Group.selected != null || Outliner.selected.length === 1),
 				click() {
 					let path = []
-					let element = Outliner.selected[0]
+					let element = Group.selected || Outliner.selected[0]
 					while (element !== "root") {
 						path.unshift(element.name)
 						element = element.parent;
