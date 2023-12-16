@@ -1,43 +1,4 @@
 (function () {
-	let _width = 0, _height = 0
-	function updateProjectUV() {
-		if (Project.box_uv) return
-
-		let texture = UVEditor.texture != 0 ? UVEditor.texture : Texture.selected
-		if (!texture) return
-
-		Cube.all.forEach(cube => {
-			cube.setUVMode(false);
-		})
-
-		let texture_width = texture.width,
-			texture_height = texture.height
-		if (texture != null && (texture_width != _width || texture_height != _height)) {
-			Cube.all.forEach(cube => {
-				for (var key in cube.faces) {
-					var uv = cube.faces[key].uv;
-					uv[0] *= texture_width / Project.texture_width;
-					uv[2] *= texture_width / Project.texture_width;
-					uv[1] *= texture_height / Project.texture_height;
-					uv[3] *= texture_height / Project.texture_height;
-				}
-			})
-			Mesh.all.forEach(mesh => {
-				for (var key in mesh.faces) {
-					var uv = mesh.faces[key].uv;
-					for (let vkey in uv) {
-						uv[vkey][0] *= texture_width / Project.texture_width;
-						uv[vkey][1] *= texture_height / Project.texture_height;
-					}
-				}
-			})
-
-			Project.texture_width = _width = texture_width;
-			Project.texture_height = _height = texture_height;
-			Canvas.updateAllUVs()
-		}
-	}
-
 	function isValidLuaIdentifier(str) {
 		const keywords = [
 			"and",
@@ -106,6 +67,7 @@
 				box_uv: false,
 				optional_box_uv: true,
 				single_texture: false,
+				per_texture_uv_size: true,
 				model_identifier: false,
 				parent_model_id: false,
 				vertex_color_ambient_occlusion: false,
@@ -233,25 +195,6 @@
 					}
 				})
 			)
-			MenuBar.menus.edit.addAction(
-				new Toggle('figura_match_texture_size', {
-					name: "Match Project UV with Texture Size",
-					default: false,
-					description: "Changes the ProjectUV so that it will always match the size of the active Texture.",
-					condition: () => Format === format && !Project.box_uv,
-					onChange(state) {
-						if (state) {
-							this.callback = Blockbench.on('update_selection', () => {
-								if (this.value && Format === format)
-									updateProjectUV()
-							})
-							updateProjectUV()
-						}
-						else {
-							this.callback?.delete()
-						}
-					}
-				}), '#editing_mode')
 			MenuBar.menus.animation.addAction(
 				new Action('figura_import_animations', {
 					name: "Import Animations...",
