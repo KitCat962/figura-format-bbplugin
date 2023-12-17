@@ -195,6 +195,109 @@
 					}
 				})
 			)
+			MenuBar.menus.uv.addAction(
+				new Action('figura_recalculate_uv', {
+					name: "Recalculate UVs",
+					description: "Calculate the uvs for all of a texture's parts",
+					icon: "fa-expand",
+					condition: { method: () => Format === format },
+					click() {
+						if (Texture.all.length == 0) {
+							Blockbench.showQuickMessage('No textures in bbmodel');
+							return
+						}
+						let _texture = null;
+						let _width = 0, _height = 0;
+						let dialog = new Dialog({
+							id: 'figura_recalculate_uv',
+							title: 'Recalculate UVs',
+							form: {
+								texture: {
+									label: 'Texture',
+									type: 'select',
+									options: Texture.all.reduce((o, t) => { o[t.uuid] = t.name; return o }, {})
+								},
+								prev_width: {
+									label: 'Current Width',
+									type: 'number',
+								},
+								prev_height: {
+									label: 'Current Height',
+									type: 'number',
+								},
+								_: "_",
+								new_width: {
+									label: 'New Width',
+									type: 'number',
+									min: 1,
+									step: 1
+								},
+								new_height: {
+									label: 'New Height',
+									type: 'number',
+									min: 1,
+									step: 1
+								},
+							},
+							onFormChange(form_result) {
+								let texture = Texture.all.find(t => t.uuid = form_result.texture)
+								if (form_result.texture != _texture) {
+									_texture = form_result.texture
+									_width = texture.width
+									_height = texture.height
+									this.setFormValues({
+										prev_width: texture.width,
+										prev_height: texture.height,
+										new_width: texture.width,
+										new_height: texture.height
+									})
+									dialog.updateFormValues(false)
+								} else if (form_result.prev_width != _width || form_result.prev_height != _height) {
+									this.setFormValues({
+										prev_width: _width,
+										prev_height: _height,
+									})
+									dialog.updateFormValues(false)
+								}
+							},
+							onConfirm(form_result) {
+								console.log("?")
+								console.log(Cube.all.filter(c => !c.box_uv))
+								Undo.initEdit({elements:[...Cube.all, ...Mesh.all]})
+								Cube.all.filter(c => !c.box_uv).forEach(cube => {
+									for (var key in cube.faces) {
+										if(cube.faces[key].texture != form_result.texture) continue
+										var uv = cube.faces[key].uv;
+										uv[0] *= form_result.new_width / form_result.prev_width;
+										uv[2] *= form_result.new_width / form_result.prev_width;
+										uv[1] *= form_result.new_height / form_result.prev_height;
+										uv[3] *= form_result.new_height / form_result.prev_height;
+									}
+								})
+								Mesh.all.forEach(mesh => {
+									for (var key in mesh.faces) {
+										if(mesh.faces[key].texture != form_result.texture) continue
+										var uv = mesh.faces[key].uv;
+										for (let vkey in uv) {
+											uv[vkey][0] *= form_result.new_width / form_result.prev_width;
+											uv[vkey][1] *= form_result.new_height / form_result.prev_height;
+										}
+									}
+								})
+								Canvas.updateAllUVs()
+								Interface.Panels.textures.inside_vue.$forceUpdate();
+								Canvas.updateLayeredTextures();
+								UVEditor.vue.$forceUpdate();
+								Undo.finishEdit('Recalculated UVs')
+							},
+							onCancel() {
+							}
+						});
+						dialog.show();
+						dialog.updateFormValues(false)
+					}
+				})
+			)
 			MenuBar.menus.animation.addAction(
 				new Action('figura_import_animations', {
 					name: "Import Animations...",
@@ -330,7 +433,7 @@
 					name: "Allow Duplicate Names",
 					description: "Toggles if duplicate group names are allowed. Can break animations if enabled. Use at own risk.",
 					icon: "fa-folder",
-					condition: { method: () => Format == format }
+					condition: { method: () => Format === format }
 				})
 			)
 
