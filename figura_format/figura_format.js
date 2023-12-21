@@ -152,7 +152,7 @@
 				}).show()
 			}
 
-			new Action('figura_copy_path', {
+			new Action('figura_copy_path_modelpart', {
 				name: "Copy ModelPart Path",
 				description: "Calculates the scripting path to this ModelPart and copies it to the clipboard.",
 				icon: "fa-clipboard",
@@ -170,9 +170,22 @@
 					navigator.clipboard.writeText(path.join(""))
 				}
 			})
-			Cube.prototype.menu.addAction('figura_copy_path', '#manage');
-			Mesh.prototype.menu.addAction('figura_copy_path', '#manage');
-			Group.prototype.menu.addAction('figura_copy_path', '#manage');
+			Cube.prototype.menu.addAction('figura_copy_path_modelpart', '#manage');
+			Mesh.prototype.menu.addAction('figura_copy_path_modelpart', '#manage');
+			Group.prototype.menu.addAction('figura_copy_path_modelpart', '#manage');
+			Animation.prototype.menu.addAction(
+				new Action('figura_copy_path_animation', {
+					name: "Copy Animation Path",
+					description: "Calculates the scripting path to this Animation and copies it to the clipboard.",
+					icon: "fa-clipboard",
+					condition: () => Format === format && (Animation.selected !== null),
+					click() {
+						let path = [Project.name || "modelName", Animation.selected.name]
+						path = path.map(index => isValidLuaIdentifier(index) ? `.${index}` : `["${index}"]`)
+						path.unshift('animations') 
+						navigator.clipboard.writeText(path.join(""))
+					}
+				}), '#properties');
 			Toolbars.main_tools.add(
 				new Action('figura_cycle_vertex_order', {
 					name: 'Cycle Vertex Order',
@@ -263,10 +276,10 @@
 							onConfirm(form_result) {
 								console.log("?")
 								console.log(Cube.all.filter(c => !c.box_uv))
-								Undo.initEdit({elements:[...Cube.all, ...Mesh.all]})
+								Undo.initEdit({ elements: [...Cube.all, ...Mesh.all] })
 								Cube.all.filter(c => !c.box_uv).forEach(cube => {
 									for (var key in cube.faces) {
-										if(cube.faces[key].texture != form_result.texture) continue
+										if (cube.faces[key].texture != form_result.texture) continue
 										var uv = cube.faces[key].uv;
 										uv[0] *= form_result.new_width / form_result.prev_width;
 										uv[2] *= form_result.new_width / form_result.prev_width;
@@ -276,7 +289,7 @@
 								})
 								Mesh.all.forEach(mesh => {
 									for (var key in mesh.faces) {
-										if(mesh.faces[key].texture != form_result.texture) continue
+										if (mesh.faces[key].texture != form_result.texture) continue
 										var uv = mesh.faces[key].uv;
 										for (let vkey in uv) {
 											uv[vkey][0] *= form_result.new_width / form_result.prev_width;
@@ -515,7 +528,8 @@
 			})
 		},
 		onunload() {
-			BarItems.figura_copy_path?.delete()
+			BarItems.figura_copy_path_modelpart?.delete()
+			BarItems.figura_copy_path_animation?.delete()
 			BarItems.figura_cycle_vertex_order?.delete()
 			BarItems.figura_match_texture_size?.delete()
 			BarItems.figura_import_animations?.delete()
