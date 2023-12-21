@@ -1,4 +1,5 @@
 (function () {
+	const Path = require('path')
 	function isValidLuaIdentifier(str) {
 		const keywords = [
 			"and",
@@ -29,6 +30,9 @@
 			&& str.search(/^[0-9]/) === -1
 			&& !keywords.includes(str)
 		)
+	}
+	function getValidLuaIndex(str) {
+		return isValidLuaIdentifier(index) ? `.${index}` : `["${index}"]`
 	}
 
 	// Stolen from line 92 of timeline_animators.js
@@ -165,7 +169,7 @@
 						element = element.parent;
 					}
 					path.unshift(Project.name || "modelName")
-					path = path.map(index => isValidLuaIdentifier(index) ? `.${index}` : `["${index}"]`)
+					path = path.map(getValidLuaIndex)
 					path.unshift('models')
 					navigator.clipboard.writeText(path.join(""))
 				}
@@ -181,9 +185,27 @@
 					condition: () => Format === format && (Animation.selected !== null),
 					click() {
 						let path = [Project.name || "modelName", Animation.selected.name]
-						path = path.map(index => isValidLuaIdentifier(index) ? `.${index}` : `["${index}"]`)
-						path.unshift('animations') 
+						path = path.map(getValidLuaIndex)
+						path.unshift('animations')
 						navigator.clipboard.writeText(path.join(""))
+					}
+				}), '#properties');
+			Texture.prototype.menu.addAction(
+				new Action('figura_copy_path_texture', {
+					name: "Copy Texture Path",
+					description: "Calculates the scripting path to this Texture and copies it to the clipboard. Results may vary.",
+					icon: "fa-clipboard",
+					condition: () => Format === format && (Texture.selected !== null),
+					click() {
+						let texture = Path.parse(Texture.selected.path)
+						let project = Path.parse(Project.save_path)
+						let relative = Path.relative(project.dir, texture.dir)
+						let path
+						if (texture.dir == '' || relative.startsWith(`..`))
+							path = `textures["${Project.name}.${Texture.selected.name.replace(/\.png$/, "")}"]`
+						else
+							path = `textures["${relative.replace(`\\${Path.sep}`, '.')}${relative == '' ? '' : '.'}${texture.name}"]`
+						navigator.clipboard.writeText(path)
 					}
 				}), '#properties');
 			Toolbars.main_tools.add(
