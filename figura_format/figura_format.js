@@ -32,7 +32,7 @@
 		)
 	}
 	function getValidLuaIndex(str) {
-		return isValidLuaIdentifier(index) ? `.${index}` : `["${index}"]`
+		return isValidLuaIdentifier(str) ? `.${str}` : `["${str}"]`
 	}
 
 	// Stolen from line 92 of timeline_animators.js
