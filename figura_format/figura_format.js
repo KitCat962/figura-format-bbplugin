@@ -548,6 +548,26 @@
 					})
 				}
 			})
+			new ValidatorCheck('figura_duplicate_texture_name_rule', {
+				update_triggers: ['add_texture', 'update_selection'],
+				condition: {
+					method: (context) => Format === format && Texture.all.length > 0
+				},
+				run() {
+					let textureCount = Texture.all.reduce((arr, t) => {
+						if (arr[t.name])
+							arr[t.name]++
+						else
+							arr[t.name] = 1
+						return arr
+					}, {})
+					for (const [name, cnt] of Object.entries(textureCount))
+						if (cnt > 1)
+							this.fail({
+								message: `${cnt} textures have the name "${name}". Figura does not support textures with duplicate names`
+							})
+				}
+			})
 		},
 		onunload() {
 			BarItems.figura_copy_path_modelpart?.delete()
