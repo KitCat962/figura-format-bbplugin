@@ -463,21 +463,20 @@
 						}).show()
 					}
 				}), '#edit')
-			MenuBar.menus.tools.addAction(
-				new Toggle('figura_duplicate_names', {
-					name: "Allow Duplicate Names",
-					description: "Toggles if duplicate group names are allowed. Can break animations if enabled. Use at own risk.",
-					icon: "fa-folder",
-					condition: { method: () => Format === format }
-				})
-			)
+			new Setting('figura_allow_duplicate_names', {
+				name: "Allow arbitrary group names",
+				description: "Enabling this removes the group name restrictions imposed by Blockbench. This can break Animations. Figura Model Format is not liable for any harm caused by this setting. You have been warned.",
+				category: 'edit',
+				type: 'toggle',
+				value: false
+			})
 
 			let name_regex = Group.prototype.name_regex, needsUniqueName = Group.prototype.needsUniqueName
-			Group.prototype.name_regex = () => (Format === format && BarItems.figura_duplicate_names?.value) ? false : name_regex();
-			Group.prototype.needsUniqueName = () => (Format === format && BarItems.figura_duplicate_names?.value) ? false : needsUniqueName();
+			Group.prototype.name_regex = () => (Format === format && settings.figura_allow_duplicate_names.value) ? false : name_regex();
+			Group.prototype.needsUniqueName = () => (Format === format && settings.figura_allow_duplicate_names.value) ? false : needsUniqueName();
 			let showMessageBox = Blockbench.showMessageBox
 			Blockbench.showMessageBox = function (options, callback) {
-				if (Format === format && BarItems.figura_duplicate_names?.value && options.translateKey == "duplicate_groups") return
+				if (Format === format && settings.figura_allow_duplicate_names.value && options.translateKey == "duplicate_groups") return
 				showMessageBox.apply(this, [options, callback])
 			}
 
