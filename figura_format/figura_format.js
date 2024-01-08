@@ -211,12 +211,12 @@
 							},
 						},
 						onFormChange(form_result) {
-							let texture = Texture.all.find(t => t.uuid = form_result.texture)
+							let texture = Texture.all.find(t => t.uuid === form_result.texture)
 							if (form_result.texture != _texture) {
 								_texture = form_result.texture
 								_width = texture.width
 								_height = texture.height
-								this.setFormValues({
+								dialog.setFormValues({
 									prev_width: texture.width,
 									prev_height: texture.height,
 									new_width: texture.width,
@@ -224,7 +224,7 @@
 								})
 								dialog.updateFormValues(false)
 							} else if (form_result.prev_width != _width || form_result.prev_height != _height) {
-								this.setFormValues({
+								dialog.setFormValues({
 									prev_width: _width,
 									prev_height: _height,
 								})
