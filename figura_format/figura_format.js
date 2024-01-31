@@ -415,6 +415,37 @@
 					Canvas.updateView({ elements: Mesh.selected, element_aspects: { geometry: true, uv: true, faces: true } });
 				}
 			})
+			const optimizeModel = new Action('figura_optimize_model', {
+				name: 'Optimize Model',
+				icon: 'fa-gear',
+				condition: { method: () => Format == format },
+				click() {
+					new Dialog('figura_optimize_model_dialog', {
+						title: "Optimize Model",
+						form: {
+							clear_unused_pivots: {
+								type: "checkbox",
+								label: "Clear Unused Pivot Data",
+								description: "If a cube does not have a rotation, set the pivot point to the origin.\nFigura does not store pivot points at the origin, resulting in saved bytes",
+								value: true,
+								nocolon: true,
+							}
+						},
+						onConfirm(form_result) {
+							Undo.initEdit({ elements: Cube.all })
+							if (form_result.clear_unused_pivots) {
+								Cube.all.forEach((cube) => {
+									if (cube.rotation.allEqual(0)) {
+										cube.origin.V3_set(0, 0, 0)
+									}
+								})
+								Canvas.updatePositions(Cube.all)
+							}
+							Undo.finishEdit('Optimize Model');
+						}
+					}).show()
+				}
+			})
 
 			const validateFaces = new ValidatorCheck('figura_mesh_face_rule', {
 				update_triggers: ['update_selection'],
@@ -498,6 +529,7 @@
 			MenuBar.menus.uv.addAction(recalculateUV)
 			MenuBar.menus.animation.addAction(importAnimations, '#file')
 			MenuBar.menus.animation.addAction(bakeIK, '#edit')
+			MenuBar.menus.tools.addAction(optimizeModel)
 			Toolbars.main_tools.add(cycleVertexOrder)
 
 			toDelete.push(
@@ -510,7 +542,8 @@
 				cycleVertexOrder,
 				validateFaces,
 				validateTextureNames,
-				arbitraryGroupNames
+				arbitraryGroupNames,
+				optimizeModel,
 			)
 
 			// Removed the Render Order field from the Right Click context menu.
