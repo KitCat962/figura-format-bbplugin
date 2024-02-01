@@ -546,6 +546,9 @@
 				optimizeModel,
 			)
 
+			// Removes the FileName in the Project dialog
+			ModelProject.properties.name.condition = () => Format != format
+
 			// Removed the Render Order field from the Right Click context menu.
 			const elementRenderOrderCondition = BarItems.element_render_order.condition
 			BarItems['element_render_order'].condition = () => Format === format ? false : elementRenderOrderCondition()
