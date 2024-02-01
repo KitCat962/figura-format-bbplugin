@@ -115,7 +115,7 @@
 					EffectAnimator.prototype.channels.particle = particle
 					EffectAnimator.prototype.channels.sound = sound
 					EffectAnimator.prototype.channels.timeline.name = tl('timeline.timeline')
-				}
+				},
 			})
 
 			toDelete.push(format)
