@@ -468,9 +468,7 @@
 			Texture.prototype.menu.addAction(copyPathTextures, '#properties');
 			MenuBar.menus.uv.addAction(recalculateUV)
 			MenuBar.menus.animation.addAction(importAnimations, '#file')
-			MenuBar.menus.animation.addAction(bakeIK, '#edit')
 			MenuBar.menus.tools.addAction(optimizeModel)
-			Toolbars.main_tools.add(cycleVertexOrder)
 
 			toDelete.push(
 				copyPathModelPart,
