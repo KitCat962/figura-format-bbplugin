@@ -66,7 +66,7 @@
 				icon: 'change_history',
 				name: 'Figura Model',
 				description: 'Model for the Figura mod.',
-				category: 'low_poly',
+				category: 'minecraft',
 				target: ['Figura'],
 				show_on_start_screen: true,
 				box_uv: false,
