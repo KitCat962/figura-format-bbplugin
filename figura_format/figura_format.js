@@ -134,7 +134,9 @@
 					path.unshift(Project.name || "modelName")
 					path = path.map(getValidLuaIndex)
 					path.unshift('models')
-					navigator.clipboard.writeText(path.join(""))
+					let pathString = path.join("")
+					navigator.clipboard.writeText(pathString)
+					Blockbench.showQuickMessage(`Coppied "${pathString}" to the clipboard`)
 				}
 			})
 			const copyPathAnimation = new Action('figura_copy_path_animation', {
@@ -146,7 +148,9 @@
 					let path = [Project.name || "modelName", Animation.selected.name]
 					path = path.map(getValidLuaIndex)
 					path.unshift('animations')
-					navigator.clipboard.writeText(path.join(""))
+					let pathString = path.join("")
+					navigator.clipboard.writeText(pathString)
+					Blockbench.showQuickMessage(`Coppied "${pathString}" to the clipboard`)
 				}
 			})
 			const copyPathTextures = new Action('figura_copy_path_texture', {
@@ -164,6 +168,7 @@
 					else
 						path = `textures["${relative.replace(`\\${PathModule.sep}`, '.')}${relative == '' ? '' : '.'}${texture.name}"]`
 					navigator.clipboard.writeText(path)
+					Blockbench.showQuickMessage(`Coppied "${path}" to the clipboard`)
 				}
 			})
 			const recalculateUV = new Action('figura_recalculate_uv', {
