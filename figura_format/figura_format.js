@@ -273,7 +273,7 @@
 				}
 			})
 			const importAnimations = new Action('figura_import_animations', {
-				name: "Import Animations...",
+				name: "Import Animations from .bbmodel...",
 				description: "Import animations from another bbmodel",
 				icon: "fa-file-import",
 				condition: { modes: ['animate'], method: () => Format === format },
