@@ -1,5 +1,4 @@
 (function () {
-	const Path = require('path')
 	const toDelete = []
 
 	function isValidLuaIdentifier(str) {
@@ -156,14 +155,14 @@
 				icon: "fa-clipboard",
 				condition: () => Format === format && (Texture.selected !== null),
 				click() {
-					let texture = Path.parse(Texture.selected.path)
-					let project = Path.parse(Project.save_path)
-					let relative = Path.relative(project.dir, texture.dir)
+					let texture = PathModule.parse(Texture.selected.path)
+					let project = PathModule.parse(Project.save_path)
+					let relative = PathModule.relative(project.dir, texture.dir)
 					let path
 					if (texture.dir == '' || relative.startsWith(`..`))
 						path = `textures["${Project.name}.${Texture.selected.name.replace(/\.png$/, "")}"]`
 					else
-						path = `textures["${relative.replace(`\\${Path.sep}`, '.')}${relative == '' ? '' : '.'}${texture.name}"]`
+						path = `textures["${relative.replace(`\\${PathModule.sep}`, '.')}${relative == '' ? '' : '.'}${texture.name}"]`
 					navigator.clipboard.writeText(path)
 				}
 			})
